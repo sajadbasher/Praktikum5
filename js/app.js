@@ -1,26 +1,26 @@
-// Assuming container is defined in your HTML
-// const container = document.querySelector(".container");
-
-function getUserMedia(options, successCallback, failureCallback) {
-  var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia || navigator.msGetUserMedia;
-  if (api) {
-    return api.bind(navigator)(options, successCallback, failureCallback);
-  }
-}
-
+// Define global variables to keep track of the stream and recorder
 var theStream;
 var theRecorder;
 var recordedChunks = [];
 
+// This function initializes user media
+function getUserMedia(options, successCallback, failureCallback) {
+  var api = navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  if (api) {
+    return api.bind(navigator)(options).then(successCallback).catch(failureCallback);
+  }
+  throw new Error('User Media API not supported.');
+}
+
+// This function is called to start the media stream and recording
 function getStream() {
-  if (!navigator.getUserMedia && !navigator.webkitGetUserMedia &&
-    !navigator.mozGetUserMedia && !navigator.msGetUserMedia) {
+  if (!navigator.mediaDevices.getUserMedia) {
     alert('User Media API not supported.');
     return;
   }
-  
-  var constraints = {video: true, audio: true};
+
+  var constraints = { video: true, audio: true };
   getUserMedia(constraints, function (stream) {
     var mediaControl = document.querySelector('video');
     
@@ -32,79 +32,49 @@ function getStream() {
     
     theStream = stream;
     try {
-      theRecorder = new MediaRecorder(stream, {mimeType: "video/webm"});
+      theRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+      theRecorder.ondataavailable = function(event) {
+        if (event.data && event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+      theRecorder.start(100); // Collect 100ms of data
     } catch (e) {
       console.error('Exception while creating MediaRecorder:', e);
       return;
     }
     console.log('MediaRecorder created');
-    theRecorder.ondataavailable = recorderOnDataAvailable;
-    theRecorder.start(100);
   }, function (err) {
     alert('Error: ' + err);
   });
 }
 
-function recorderOnDataAvailable(event) {
-  if (event.data.size === 0) return;
-  recordedChunks.push(event.data);
+// Stops the recording and saves the video to cache
+function stopRecordingAndSaveToCache() {
+  console.log('Stopping recording and saving data');
+  theRecorder.stop();
+  theStream.getTracks().forEach(track => track.stop());
+
+  theRecorder.onstop = function() {
+    // Create a Blob from the recorded chunks
+    var blob = new Blob(recordedChunks, { type: 'video/webm' });
+    saveToCache(blob);
+  };
 }
 
+// Saves the recording Blob to the cache
 function saveToCache(blob) {
-  // Create a new URL for the blob
-  var url = URL.createObjectURL(blob);
-
-  // Create a new Request and Response object
-  var request = new Request(url);
+  var cacheKey = 'cached-video';
+  var request = new Request(cacheKey);
   var response = new Response(blob);
 
-  // Open the desired cache and store the Response object
   caches.open('video-cache').then(function(cache) {
     cache.put(request, response).then(function() {
       console.log('Saved video to cache.');
-      // Revoke the blob URL to free up memory
-      URL.revokeObjectURL(url);
     }).catch(function(error) {
       console.error('Failed to save video to cache:', error);
     });
   });
 }
 
-
-
-// downloadFromCach
-function downloadFromCache() {
-  // Open the cache where the video is stored
-  caches.open('video-cache').then(function(cache) {
-    // Use a cache key that you used when storing the video
-    cache.match('video-key').then(function(response) {
-      if (response) {
-        // Retrieve the video blob from the cache response
-        response.blob().then(function(blob) {
-          // Create a URL for the blob
-          var url = window.URL.createObjectURL(blob);
-          var a = document.createElement("a");
-          document.body.appendChild(a);
-          a.style = "display: none";
-          a.href = url;
-          a.download = 'cached-video.webm'; // Set a filename for the download
-          a.click();
-          
-          // Clean up
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        });
-      } else {
-        console.error('Video not found in cache.');
-      }
-    });
-  });
-}
-
-
-
-// Service Worker and Notification code remains unchanged...
-// ...
-
-// Make sure to update the appropriate event listener or function call 
-// to use saveToCache instead of download where necessary
+// ... Rest of your code such as service worker registration and notifications ...
