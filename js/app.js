@@ -57,14 +57,16 @@ function setupRecorder(stream) {
 
 // This new function retrieves the video from the cache and downloads it.
 async function downloadFromCache() {
+  const videoKey = 'my_recorded_video.webm';  // This should match the key used when saving the video.
+
   if (!('caches' in window)) {
     alert('Cache API not supported!');
     return;
   }
 
   try {
-    const cache = await caches.open('videos');
-    const cachedResponse = await cache.match('video.webm');
+    const cache = await caches.open('video-cache');
+    const cachedResponse = await cache.match(videoKey);
     
     if (!cachedResponse || !cachedResponse.ok) {
       throw new Error('No cached video found!');
@@ -87,6 +89,7 @@ async function downloadFromCache() {
     alert(`Error: ${err.message}`);
   }
 }
+
 
 
 // Stops the recording and saves the video to cache
