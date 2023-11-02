@@ -50,54 +50,57 @@ function recorderOnDataAvailable(event) {
   recordedChunks.push(event.data);
 }
 
-function saveToCache() {
-  console.log('Saving data to cache');
-  theRecorder.stop();
-  theStream.getTracks().forEach(track => track.stop());
+function saveToCache(blob) {
+  // Create a new URL for the blob
+  var url = URL.createObjectURL(blob);
 
-  var blob = new Blob(recordedChunks, {type: "video/webm"});
-  var url = (window.URL || window.webkitURL).createObjectURL(blob);
-
+  // Create a new Request and Response object
   var request = new Request(url);
   var response = new Response(blob);
 
+  // Open the desired cache and store the Response object
   caches.open('video-cache').then(function(cache) {
     cache.put(request, response).then(function() {
-      console.log('Video was saved to cache!');
+      console.log('Saved video to cache.');
+      // Revoke the blob URL to free up memory
+      URL.revokeObjectURL(url);
     }).catch(function(error) {
       console.error('Failed to save video to cache:', error);
     });
   });
-
-  setTimeout(function () {
-    (window.URL || window.webkitURL).revokeObjectURL(url);
-  }, 100);
 }
+
 
 
 // downloadFromCach
 function downloadFromCache() {
-  // Assuming 'video-cache' is the name of your cache where the video is stored
+  // Open the cache where the video is stored
   caches.open('video-cache').then(function(cache) {
-    cache.matchAll().then(function(responses) {
-      // Here we only expect one match since we're only storing one video
-      responses[0].blob().then(function(blob) {
-        // Create a URL for the blob
-        var url = (window.URL || window.webkitURL).createObjectURL(blob);
-        var a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        a.href = url;
-        a.download = 'recorded-video.webm'; // You can name your file here
-        a.click();
-        
-        // Clean up by revoking the URL and removing the anchor element
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      });
+    // Use a cache key that you used when storing the video
+    cache.match('video-key').then(function(response) {
+      if (response) {
+        // Retrieve the video blob from the cache response
+        response.blob().then(function(blob) {
+          // Create a URL for the blob
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          document.body.appendChild(a);
+          a.style = "display: none";
+          a.href = url;
+          a.download = 'cached-video.webm'; // Set a filename for the download
+          a.click();
+          
+          // Clean up
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        });
+      } else {
+        console.error('Video not found in cache.');
+      }
     });
   });
 }
+
 
 
 // Service Worker and Notification code remains unchanged...
