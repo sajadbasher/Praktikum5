@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,30 +10,29 @@
     <meta name="apple-mobile-web-app-status-bar" content="#db4938">
     <meta name="theme-color" content="#db4938">
     <title>PWA Sample</title>
-  </head>
+</head>
 <body>
-  <main>
-    <nav>
-      <h1>PWA Sample</h1>
-      <ul>
-        <li>Home</li>
-        <li>About</li>
-        <li>Blog</li>
-      </ul>
-    </nav>
+    <main>
+        <nav>
+            <h1>PWA Sample</h1>
+            <ul>
+                <li>Home</li>
+                <li>About</li>
+                <li>Blog</li>
+            </ul>
+        </nav>
+        <video autoplay style="height:180px; width: 240px;" poster="https://image.freepik.com/free-icon/video-camera-symbol_318-40225.png"></video>
+        <p><button onclick="getStream()">Grab video & start recording</button></p>
+        <!-- Updated button for stopping the recording and saving to cache -->
+        <p><button onclick="stopRecordingAndSaveToCache()">Stop & Save to Cache</button></p>
 
-    <video autoplay style="height:180px; width: 240px;" poster="https://image.freepik.com/free-icon/video-camera-symbol_318-40225.png"></video>
-    <p><button onclick="getStream()">Grab video & start recording</button></p>
-    <p><button onclick="saveToCache()">Stop & Save to Cache</button></p>
-    <p><button onclick="downloadFromCache()">Download from Cache</button></p>
-    <div class="container">
-      <p>Current permission status is <b id="status">unavailable</b>.</p>
-
-      <p><button onclick="requestPermission()">Request permission</button></p>
-      <p><button onclick="nonPersistentNotification()">Non-persistent notification</button></p>
-      <p><button onclick="persistentNotification()">Persistent notification</button></p>
-    </div>
-  </main>
-  <script src="js/app.js"></script>
+        <div class="container">
+            <p>Current permission status is <b id="status">unavailable</b>.</p>
+            <p><button onclick="requestPermission()">Request permission</button></p>
+            <p><button onclick="nonPersistentNotification()">Non-persistent notification</button></p>
+            <p><button onclick="persistentNotification()">Persistent notification</button></p>   
+        </div>
+    </main>
+    <script src="js/app.js"></script>
 </body>
 </html>
