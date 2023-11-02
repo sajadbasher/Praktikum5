@@ -5,13 +5,14 @@ var recordedChunks = [];
 
 // This function initializes user media
 function getUserMedia(options, successCallback, failureCallback) {
-  var api = navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia || navigator.msGetUserMedia;
-  if (api) {
-    return api.bind(navigator)(options).then(successCallback).catch(failureCallback);
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    return navigator.mediaDevices.getUserMedia(options)
+      .then(successCallback)
+      .catch(failureCallback);
   }
   throw new Error('User Media API not supported.');
 }
+
 
 // This function is called to start the media stream and recording
 function getStream() {
