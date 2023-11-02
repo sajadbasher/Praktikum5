@@ -104,17 +104,22 @@ function stopRecordingAndSaveToCache() {
 
 // Saves the recording Blob to the cache
 function saveToCache(blob) {
-  var cacheKey = 'cached-video';
-  var request = new Request(cacheKey);
-  var response = new Response(blob);
+  if ('caches' in window) {
+    const videoKey = 'my_recorded_video.webm';
+    const request = new Request(videoKey, { mode: 'no-cors' });
+    const response = new Response(blob);
 
-  caches.open('video-cache').then(function(cache) {
-    cache.put(request, response).then(function() {
-      console.log('Saved video to cache.');
-    }).catch(function(error) {
-      console.error('Failed to save video to cache:', error);
+    caches.open('video-cache').then(cache => {
+      cache.put(request, response).then(() => {
+        console.log('Saved video to cache.');
+      }).catch(error => {
+        console.error('Failed to save video to cache:', error);
+      });
     });
-  });
+  } else {
+    console.error('Cache API not supported');
+  }
 }
+
 
 // ... Rest of your code such as service worker registration and notifications ...
