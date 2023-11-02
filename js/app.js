@@ -1,13 +1,4 @@
-const container = document.querySelector(".container");
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker
-      .register("./serviceWorker.js", { scope: "./" })
-      .then(res => console.log("service worker registered"))
-      .catch(err => console.log("service worker not registered", err));
-  });
-}
+//const container = document.querySelector(".container");
 function getUserMedia(options, successCallback, failureCallback) {
   var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
     navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -78,3 +69,13 @@ function download() {
   setTimeout(function () {
       (window.URL || window.webkitURL).revokeObjectURL(url);
   }, 100); 
+}
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker
+      .register("./serviceWorker.js", { scope: "./" })
+      .then(res => console.log("service worker registered"))
+      .catch(err => console.log("service worker not registered", err));
+  });
+}
+
