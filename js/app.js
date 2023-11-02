@@ -16,7 +16,7 @@ function getUserMedia(options, successCallback, failureCallback) {
 
 // This function is called to start the media stream and recording
 function getStream() {
-  if (!navigator.mediaDevices.getUserMedia) {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     alert('User Media API not supported.');
     return;
   }
@@ -25,30 +25,21 @@ function getStream() {
   getUserMedia(constraints, function (stream) {
     var mediaControl = document.querySelector('video');
     
-    if ('srcObject' in mediaControl) {
+    // Older browsers may not have srcObject
+    if ("srcObject" in mediaControl) {
       mediaControl.srcObject = stream;
     } else {
-      mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+      // Avoid using this in new browsers, as it is going away.
+      mediaControl.src = window.URL.createObjectURL(stream);
     }
     
     theStream = stream;
-    try {
-      theRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-      theRecorder.ondataavailable = function(event) {
-        if (event.data && event.data.size > 0) {
-          recordedChunks.push(event.data);
-        }
-      };
-      theRecorder.start(100); // Collect 100ms of data
-    } catch (e) {
-      console.error('Exception while creating MediaRecorder:', e);
-      return;
-    }
-    console.log('MediaRecorder created');
+    setupRecorder(stream); // This is a new function to encapsulate the recorder setup
   }, function (err) {
     alert('Error: ' + err);
   });
 }
+
 
 // Stops the recording and saves the video to cache
 function stopRecordingAndSaveToCache() {
