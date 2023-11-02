@@ -39,6 +39,21 @@ function getStream() {
     alert('Error: ' + err);
   });
 }
+function setupRecorder(stream) {
+  try {
+    theRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    theRecorder.ondataavailable = function(event) {
+      if (event.data.size > 0) {
+        recordedChunks.push(event.data);
+      }
+    };
+    theRecorder.start(100); // Collect 100ms of data chunks
+  } catch (e) {
+    console.error('Exception while creating MediaRecorder:', e);
+    return;
+  }
+  console.log('MediaRecorder created');
+}
 
 
 // Stops the recording and saves the video to cache
