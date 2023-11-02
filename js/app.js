@@ -74,6 +74,32 @@ function saveToCache() {
   }, 100);
 }
 
+
+// downloadFromCach
+function downloadFromCache() {
+  // Assuming 'video-cache' is the name of your cache where the video is stored
+  caches.open('video-cache').then(function(cache) {
+    cache.matchAll().then(function(responses) {
+      // Here we only expect one match since we're only storing one video
+      responses[0].blob().then(function(blob) {
+        // Create a URL for the blob
+        var url = (window.URL || window.webkitURL).createObjectURL(blob);
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = 'recorded-video.webm'; // You can name your file here
+        a.click();
+        
+        // Clean up by revoking the URL and removing the anchor element
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
+    });
+  });
+}
+
+
 // Service Worker and Notification code remains unchanged...
 // ...
 
