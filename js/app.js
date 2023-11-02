@@ -55,6 +55,39 @@ function setupRecorder(stream) {
   console.log('MediaRecorder created');
 }
 
+// This new function retrieves the video from the cache and downloads it.
+async function downloadFromCache() {
+  if (!('caches' in window)) {
+    alert('Cache API not supported!');
+    return;
+  }
+
+  try {
+    const cache = await caches.open('videos');
+    const cachedResponse = await cache.match('video.webm');
+    
+    if (!cachedResponse || !cachedResponse.ok) {
+      throw new Error('No cached video found!');
+    }
+
+    const blob = await cachedResponse.blob();
+    const url = window.URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'downloaded_video.webm';
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (err) {
+    console.error('Failed to download video from cache:', err);
+    alert(`Error: ${err.message}`);
+  }
+}
+
 
 // Stops the recording and saves the video to cache
 function stopRecordingAndSaveToCache() {
