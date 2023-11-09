@@ -80,10 +80,6 @@ h1 {
   border-radius: 20px;
 }
 
-.mycontainer {
-  perspective: 300;
-  -webkit-perspective: 300;
-}
 
 #imgLogo {
   width: 275px;
