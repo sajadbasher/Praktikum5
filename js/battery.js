@@ -1,11 +1,3 @@
-function onLevelChange() {
-    var level = this.level * 100;
-    handleChange('Battery level changed to ' + level + '%');
-    var batteryCircle = document.getElementById('batteryCircle');
-    batteryCircle.style.setProperty('--level', level + '%');
-    batteryCircle.innerHTML = level + '%';
-}
-
 if ('getBattery' in navigator || ('battery' in navigator && 'Promise' in window)) {
   var target = document.getElementById('target');
 
@@ -49,3 +41,12 @@ if ('getBattery' in navigator || ('battery' in navigator && 'Promise' in window)
     battery.addEventListener('levelchange', onLevelChange);
   });
 }
+
+function onLevelChange() {
+    var level = this.level * 100;
+    handleChange('Battery level changed to ' + level + '%');
+    var batteryCircle = document.getElementById('batteryCircle');
+    batteryCircle.style.setProperty('--level', level + '%');
+    batteryCircle.innerHTML = level + '%';
+}
+
