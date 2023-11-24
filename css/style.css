@@ -11,12 +11,6 @@ body {
   font-size: 1rem;
 }
 
-main {
-  max-width: 900px;
-  margin: auto;
-  padding: 0.5rem;
-  text-align: center;
-}
 nav {
   display: flex;
   justify-content: space-between;
@@ -46,4 +40,36 @@ h1 {
   padding: 1rem 0;
 }
 
+.sidenav {
+  width: 130px;
+  position: fixed;
+  z-index: 1;
+  top: 20px;
+  left: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
 
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #2196F3;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #064579;
+}
+
+.main {
+  margin-left: 140px; /* Same width as the sidebar + left position in px */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
