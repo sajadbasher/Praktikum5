@@ -1,21 +1,17 @@
- /* Stil für die Transaktionsliste */
-        #transaktionsListe {
-            list-style: none;
-            padding: 0;
+/* Stil für die Tabelle */
+        #transaktionenTabelle {
+            border-collapse: collapse;
+            width: 100%;
         }
 
-        .transaktionsEintrag {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            background-color: #f0f0f0;
-            padding: 5px;
-            border-radius: 5px;
+        #transaktionenTabelle th, #transaktionenTabelle td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
 
-        .beschreibung {
-            flex: 1;
-            font-weight: bold;
+        #transaktionenTabelle th {
+            background-color: #f2f2f2;
         }
 
         /* Stil für den Gesamtbetrag */
