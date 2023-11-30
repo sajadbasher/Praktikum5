@@ -13,23 +13,23 @@
 </head>
 
   <body>
-   <h1>Transaktionsformular</h1>
+ <h1>Transaktionsformular</h1>
     <form id="transaktionForm">
-        <label for="text">Text:</label>
+        <label for="text">Beschreibung:</label>
         <input type="text" id="text" name="text" required><br><br>
 
-        <label for="transaktion">Wert der Transaktion:</label>
+        <label for="transaktion">Transaktionssumme:</label>
         <input type="number" id="transaktion" name="transaktion" required><br><br>
 
         <input type="submit" value="Transaktion speichern">
     </form>
 
-    <h2>Transaktionsliste</h2>
+    <h2>Einkaufsliste</h2>
     <ul id="transaktionsListe">
         <!-- Hier werden die Transaktionen angezeigt -->
     </ul>
-    <h2>Gesamtbetrag</h2>
-    <p id="gesamtbetrag">0</p>
+
+    <div id="gesamtbetrag">Gesamtbetrag: 0</div>
  
   <script src="/uebungen/js/uebung5.js"></script>    
   </body>
