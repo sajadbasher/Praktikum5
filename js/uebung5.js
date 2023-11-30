@@ -66,4 +66,4 @@
             // Gesamtbetrag berechnen und aktualisieren
             const gesamtbetrag = transaktionen.reduce((sum, transaktion) => sum + transaktion.transaktion, 0);
             gesamtbetragElement.textContent = `Gesamtbetrag: ${gesamtbetrag}`;
-        }
+        
