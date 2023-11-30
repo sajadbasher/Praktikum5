@@ -1,8 +1,8 @@
-        const transaktionForm = document.getElementById('transaktionForm');
+ const transaktionForm = document.getElementById('transaktionForm');
         const transaktionsListe = document.getElementById('transaktionsListe');
-        const budgetInput = document.getElementById('budget');
         const textInput = document.getElementById('text');
         const transaktionInput = document.getElementById('transaktion');
+        const gesamtbetragElement = document.getElementById('gesamtbetrag');
 
         // Array zur Speicherung der Transaktionen
         const transaktionen = [];
@@ -11,7 +11,6 @@
             event.preventDefault();
 
             // Werte aus den Eingabefeldern abrufen
-            const budget = parseFloat(budgetInput.value);
             const text = textInput.value;
             const transaktion = parseFloat(transaktionInput.value);
 
@@ -20,6 +19,9 @@
 
             // Transaktionsliste aktualisieren
             updateTransaktionsListe();
+
+            // Gesamtbetrag aktualisieren
+            updateGesamtbetrag();
 
             // Eingabefelder leeren
             textInput.value = '';
@@ -36,4 +38,10 @@
                 listItem.textContent = `${transaktion.text}: ${transaktion.transaktion}`;
                 transaktionsListe.appendChild(listItem);
             });
+        }
+
+        function updateGesamtbetrag() {
+            // Gesamtbetrag berechnen und aktualisieren
+            const gesamtbetrag = transaktionen.reduce((sum, transaktion) => sum + transaktion.transaktion, 0);
+            gesamtbetragElement.textContent = `Gesamtbetrag: ${gesamtbetrag}`;
         }
