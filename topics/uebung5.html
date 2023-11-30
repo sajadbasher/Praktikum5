@@ -11,25 +11,33 @@
     <meta name="theme-color" content="#db4938">
     <title>Übung 5</title>
 </head>
-
   <body>
  <h1>Transaktionsformular</h1>
     <form id="transaktionForm">
         <label for="text">Beschreibung:</label>
         <input type="text" id="text" name="text" required><br><br>
 
-        <label for="transaktion">Transaktionssumme:</label>
+        <label for="transaktion">Kosten:</label>
         <input type="number" id="transaktion" name="transaktion" required><br><br>
 
         <input type="submit" value="Transaktion speichern">
     </form>
 
     <h2>Einkaufsliste</h2>
-    <ul id="transaktionsListe">
-        <!-- Hier werden die Transaktionen angezeigt -->
-    </ul>
+    <table id="transaktionenTabelle">
+        <thead>
+            <tr>
+                <th>Beschreibung</th>
+                <th>Kosten</th>
+            </tr>
+        </thead>
+        <tbody id="transaktionsListe">
+            <!-- Hier werden die Transaktionen angezeigt -->
+        </tbody>
+    </table>
 
     <div id="gesamtbetrag">Gesamtbetrag: 0</div>
+
  
   <script src="/uebungen/js/uebung5.js"></script>    
   </body>
