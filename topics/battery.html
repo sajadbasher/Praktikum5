@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/battery.css">
+    <link rel="manifest" href="manifest.json">
+    <!-- ios support -->
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938">
+    <meta name="theme-color" content="#db4938">
+    <title>PWA Sample</title>
+</head>
+<body>
+<p>Initial battery status was <b id="charging">unknown</b>, charging time <b id="chargingTime">unknown</b>, discharging time <b id="dischargingTime">unknown</b>, level <b id="level">unknown</b>.</p>
+<div id="batteryStatusContainer">
+    <div id="batteryCircle"></div>
+</div>
+
+<div id="target"></div>
+    <script src="js/battery.js"></script>
+</body>
+</html>
