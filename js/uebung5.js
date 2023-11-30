@@ -4,8 +4,22 @@
         const transaktionInput = document.getElementById('transaktion');
         const gesamtbetragElement = document.getElementById('gesamtbetrag');
 
+        // Funktion zur Datenwiederherstellung aus localStorage
+        function restoreData() {
+            const savedData = localStorage.getItem('transaktionen');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                transaktionen.push(...parsedData);
+                updateTransaktionsListe();
+                updateGesamtbetrag();
+            }
+        }
+
         // Array zur Speicherung der Transaktionen
         const transaktionen = [];
+
+        // Daten bei Laden der Seite wiederherstellen
+        restoreData();
 
         transaktionForm.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -23,6 +37,9 @@
             // Gesamtbetrag aktualisieren
             updateGesamtbetrag();
 
+            // Daten in localStorage speichern
+            localStorage.setItem('transaktionen', JSON.stringify(transaktionen));
+
             // Eingabefelder leeren
             textInput.value = '';
             transaktionInput.value = '';
@@ -34,16 +51,14 @@
 
             // Transaktionen durchlaufen und zur Liste hinzufügen
             transaktionen.forEach(function (transaktion) {
-                const listItem = document.createElement('li');
-                listItem.className = 'transaktionsEintrag';
-                const beschreibung = document.createElement('div');
-                beschreibung.className = 'beschreibung';
-                beschreibung.textContent = `Beschreibung: ${transaktion.text}`;
-                const transaktionssumme = document.createElement('div');
-                transaktionssumme.textContent = `Transaktionssumme: ${transaktion.transaktion}`;
-                listItem.appendChild(beschreibung);
-                listItem.appendChild(transaktionssumme);
-                transaktionsListe.appendChild(listItem);
+                const row = document.createElement('tr');
+                const beschreibungCell = document.createElement('td');
+                beschreibungCell.textContent = transaktion.text;
+                const kostenCell = document.createElement('td');
+                kostenCell.textContent = transaktion.transaktion;
+                row.appendChild(beschreibungCell);
+                row.appendChild(kostenCell);
+                transaktionsListe.appendChild(row);
             });
         }
 
