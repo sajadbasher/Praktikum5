@@ -1,4 +1,4 @@
- const transaktionForm = document.getElementById('transaktionForm');
+        const transaktionForm = document.getElementById('transaktionForm');
         const transaktionsListe = document.getElementById('transaktionsListe');
         const textInput = document.getElementById('text');
         const transaktionInput = document.getElementById('transaktion');
@@ -35,7 +35,14 @@
             // Transaktionen durchlaufen und zur Liste hinzufügen
             transaktionen.forEach(function (transaktion) {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${transaktion.text}: ${transaktion.transaktion}`;
+                listItem.className = 'transaktionsEintrag';
+                const beschreibung = document.createElement('div');
+                beschreibung.className = 'beschreibung';
+                beschreibung.textContent = `Beschreibung: ${transaktion.text}`;
+                const transaktionssumme = document.createElement('div');
+                transaktionssumme.textContent = `Transaktionssumme: ${transaktion.transaktion}`;
+                listItem.appendChild(beschreibung);
+                listItem.appendChild(transaktionssumme);
                 transaktionsListe.appendChild(listItem);
             });
         }
