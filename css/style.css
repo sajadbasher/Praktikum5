@@ -1,22 +1,47 @@
-.test-element {
-  height: 100px;
-  background-color: black;
-  width: 100px;
-  z-index: 5;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  color: white;
-  text-align: center;
-  -ms-touch-action: none;
+body {
+    font-family: Arial, sans-serif;
 }
 
-.test-element:nth-child(2) {
-  top: 150px;
-  left: 150px;
+.kanban-board {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
 }
 
-.test-element:nth-child(3) {
-  top: 50px;
-  left: 100px;
+.kanban-column {
+    width: 30%;
+    background-color: #f0f0f0;
+    margin: 0 10px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.kanban-column h2 {
+    text-align: center;
+}
+
+/* kanban karten */
+
+.kanban-card {
+    padding: 10px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    cursor: move;
+}
+
+.kanban-card p {
+    margin: 0;
+}
+
+/* ein Element aus Kanban Karten beim Ziehen Verstecken  */
+.hide {
+    display: none;
+}
+
+/* Highlight-Stil für Drop-Ziele */
+.drag-over {
+    border: 2px dashed #666; /* Beispiel für ein Dashed-Border-Highlight */
+    background-color: #f7f7f7; /* Leichte Hintergrundfarbenänderung zum Hervorheben */
 }
